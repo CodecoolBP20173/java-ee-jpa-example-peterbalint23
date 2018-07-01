@@ -14,16 +14,24 @@ public class Student {
     private long id;
 
     private String name;
-
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
 
+    @Transient
     private long age;
 
     @OneToOne
     private Address address;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Klass klass;
+
+    @ElementCollection
+    @CollectionTable(name="Phone")
+    List<String> phoneNumbers;
 
     public Student() {
     }
@@ -36,10 +44,15 @@ public class Student {
                 / (60L * 60L * 1000L * 24L * 365L);
     }
 
-    public Student(String name, String email, Date dateOfBirth, Address address) {
+    public Student(String name, String email, Date dateOfBirth, Address address, List<String> phoneNumbers, Klass klass) {
         this(name, email, dateOfBirth);
         this.address = address;
+        this.phoneNumbers = phoneNumbers;
+        this.klass = klass;
+
     }
+
+
 
     public long getId() {
         return id;
